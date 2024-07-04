@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  background-color: #000;
+  color: white;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+  --primary: #7c3aed;
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: gray;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(16, 16, 16);
+}
+
+@layer components {
+  .purple-btn {
+    @apply h-fit w-fit cursor-pointer rounded-lg border border-violet-600 bg-violet-600 p-2 transition hover:bg-transparent;
+  }
+
+  .login-btn {
+    @apply w-full cursor-pointer rounded-lg border border-violet-600 bg-violet-600 p-2 transition hover:bg-transparent;
+  }
+
+  .link {
+    @apply rounded-lg border border-zinc-800 bg-zinc-800 p-2 text-center transition  hover:bg-transparent;
+  }
+
+  .bg_link {
+    @apply rounded-none border-0 border-b-1 border-white bg-transparent px-0 py-1 hover:border-violet-600 hover:text-violet-600;
+  }
+
+  .active_link {
+    @apply border-violet-600 text-violet-600 !important;
+  }
+
+  .menu_float {
+    @apply absolute top-16 flex w-24 flex-col gap-y-2 rounded-xl bg-zinc-700 p-2 shadow-xl shadow-gray-800;
+  }
+
+  .menu {
+    @apply visible relative left-0 top-0 flex flex-row gap-4 bg-transparent shadow-none;
+  }
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.back {
+  background: #000;
+}
+
+.h-full-header {
+  height: calc(100vh - 16rem);
+}
+
+label {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+.children-border > *:nth-last-child(n + 2) {
+  border-bottom: 1px solid gray;
+}
+
+.fade-out {
+  display: none;
+  animation: fadeOut 0.5s ease-in;
+}
+
+.fade-in {
+  padding: 8px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeOut {
+  0% {
+    display: block;
+    opacity: 1;
+    height: 42px;
+    padding: 8px 8px;
+  }
+  50% {
+    opacity: 0.5;
+    height: 30px;
+    padding: 4px 8px;
+  }
+  100% {
+    opacity: 0;
+    height: 0px;
+    padding: 0 8px;
+    margin: -8px 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    height: 0px;
+    padding: 0 8px;
+    margin: -8px 0;
+  }
+  50% {
+    opacity: 0.5;
+    height: 30px;
+    padding: 4px 8px;
+  }
+  100% {
+    opacity: 1;
+    height: 42px;
+    padding: 8px 8px;
+  }
+}
+
+.hide-top {
+  opacity: 0;
+  display: none;
+  animation: hide-top 1s;
+}
+
+.hide-top div {
+  display: none;
+  animation: hide-div 1s;
+}
+
+@keyframes hide-top {
+  0% {
+    display: flex;
+    opacity: 1;
+    height: 44px;
+    padding: 4px;
+  }
+
+  100% {
+    opacity: 0;
+    height: 0px;
+    padding: 0;
+    margin: -8px 0;
+  }
+}
+
+@keyframes hide-div {
+  0% {
+    display: flex;
+    opacity: 1;
+    height: 100%;
+  }
+
+  100% {
+    display: none;
+    opacity: 0;
+    height: 0px;
+    margin: 0;
+  }
+}
+
+.show {
+  display: flex;
+  opacity: 1;
+  animation: show 1s;
+}
+
+.show div {
+  display: flex;
+  animation: show-div 1s;
+}
+
+@keyframes show {
+  0% {
+    display: none;
+    opacity: 0;
+    height: 0px;
+    margin: 0;
+  }
+
+  100% {
+    display: flex;
+    opacity: 1;
+    height: 44px;
+  }
+}
+
+@keyframes show-div {
+  0% {
+    height: 0;
+    margin: 0;
+    opacity: 0;
+  }
+
+  100% {
+    height: calc(100% - 10px);
+    opacity: 1;
+  }
+}
+
+#search:hover {
+  stroke: #7C3AED;
+}
+
+.shadow-custom:hover {
+  box-shadow: var(--primary) 0px 0px 20px 2px;
+}
+
+.no-scroll {
+  scrollbar-width: none;
+}
