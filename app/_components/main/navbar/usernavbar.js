@@ -45,7 +45,7 @@ const UserDropdownMenu = () => {
     };
 
     const changeRoute = (route) => {
-        setIsOpened(false)
+        setIsUserMenuOpen(false)
         router.push(route)
     }
 

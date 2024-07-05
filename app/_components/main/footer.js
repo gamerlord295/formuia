@@ -1,7 +1,7 @@
 import Badges from "@/app/_components/main/badges";
 const Footer = () => {
   return (
-    <div className="bottom-0 mt-auto flex w-full gap-4 rounded-t-md bg-zinc-950 p-4">
+    <div className="bottom-0 mt-auto flex w-full gap-4 rounded-t-md bg-zinc-950 p-4 max-w-6xl">
       <div className="flex flex-row justify-between w-full">
         <div className="flex gap-4">
         <Badges
