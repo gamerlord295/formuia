@@ -63,10 +63,10 @@ const UserDropdownMenu = () => {
     }, [userData]);
 
     return (
-        <div className="flex flex-row gap-4 items-center bg-zinc-900 py-2 px-3 h-14 rounded-2xl">
+        <div className="flex flex-row sm:gap-4 gap-3 items-center bg-zinc-900 py-2 px-3 h-14 rounded-2xl">
             <Popover>
                 <PopoverTrigger>
-                    <div className="flex gap-2 items-center hover:bg-zinc-800 h-full px-2 rounded-xl cursor-pointer">
+                    <div className="flex gap-2 items-center hover:bg-zinc-800 h-full sm:px-2 rounded-xl cursor-pointer">
                         <Streak className="w-7 h-7" />
                         {userData?.streak?.at(-1)?.streak}
                     </div>

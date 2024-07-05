@@ -48,6 +48,9 @@ const NavBar = () => {
       position="sticky"
       className="mb-8 flex w-full items-center gap-4 border-zinc-500 bg-zinc-950 py-3"
     // isMenuOpen={menuOpened}
+      classNames={{
+        wrapper: "px-4 sm:px-6"
+      }}
     >
       <NavbarContent>
         {/* NavBar Items large width */}
