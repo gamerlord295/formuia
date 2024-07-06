@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/app/_hooks/useStore";
@@ -12,7 +12,6 @@ import {
     DropdownMenu,
     DropdownItem,
     Divider,
-    Button,
     Popover,
     PopoverTrigger,
     PopoverContent,
@@ -48,19 +47,6 @@ const UserDropdownMenu = () => {
         setIsUserMenuOpen(false)
         router.push(route)
     }
-
-    useEffect(() => {
-        if (!userData) return;
-        days.map((day, index) => {
-            // console.log(index, day, index > new Date().getDay(), new Date(userData?.streak?.at(new Date().getDay() - index)?.time).getDay())
-            console.log(index ,new Date(userData?.streak?.at(new Date().getDay() - index)?.time).getDay(), index - new Date().getDay() - 1)
-        }
-        )
-
-
-
-        // console.table(userData.streak.map((streak) => new Date(streak.time).getDay()))
-    }, [userData]);
 
     return (
         <div className="flex flex-row sm:gap-4 gap-3 items-center bg-zinc-900 py-2 px-3 h-14 rounded-2xl">

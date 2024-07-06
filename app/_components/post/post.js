@@ -19,16 +19,17 @@ import dots from "@/public/3dots.svg";
 import useSet from "@/app/_hooks/useSet";
 import { useRouter } from "next/navigation";
 import useLevel from "../../_hooks/useLevel";
-import { Modal, ModalContent, useDisclosure, Image, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, ModalBody, ModalHeader } from "@nextui-org/react";
+import { Modal, ModalContent, useDisclosure, Image, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, ModalBody, ModalHeader, Skeleton } from "@nextui-org/react";
 
 const db = getFirestore();
 
-const Img = ({ item, index, className, title, parentKey }) => {
+const Img = ({ item, index, className, title, parentKey, setIsLoaded }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
       <div className="w-full relative shrink-0" id={parentKey + index}>
         <Image
+          onLoad={() => index === 0 && setIsLoaded(true)}
           classNames={{ wrapper: "min-w-full h-full" }}
           key={item}
           radius="md"
@@ -47,7 +48,7 @@ const Img = ({ item, index, className, title, parentKey }) => {
         className="w-auto h-fit"
         size="5xl"
         placement="center"
-        aria-lable="image"
+        aria-label="image"
       >
         <ModalContent>
           <ModalHeader className="text-medium">
@@ -70,20 +71,24 @@ const Img = ({ item, index, className, title, parentKey }) => {
 const ImgGroup = ({ data, title, parentKey }) => {
 
   const [id, setId] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   return (
     <div className="relative w-full">
-      <div className="w-full flex flex-row overflow-y-hidden no-scroll scroll-smooth snap-mandatory snap-x relative items-center">
-        {data?.map((src, index) =>
-          <Img
-            parentKey={parentKey}
-            index={index}
-            item={src}
-            key={src}
-            title={title}
-          />)}
-      </div>
-      {data?.length > 1 &&
+      <Skeleton className="w-full h-full rounded-md" isLoaded={isLoaded}>
+        <div className="w-full flex flex-row overflow-y-hidden no-scroll scroll-smooth snap-mandatory snap-x relative items-center">
+          {data?.map((src, index) =>
+            <Img
+              setIsLoaded={setIsLoaded}
+              parentKey={parentKey}
+              index={index}
+              item={src}
+              key={src}
+              title={title}
+            />)}
+        </div>
+      </Skeleton>
+      {data?.length > 1 && isLoaded &&
         <>
           <button onClick={() => {
             document.getElementById(id === 0 ? `${parentKey}${data.length - 1}` : parentKey + (id - 1))?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" })
