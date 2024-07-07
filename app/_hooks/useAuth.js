@@ -20,40 +20,60 @@ const useAuth = (protect) => {
 
     const { setUserData, setStreakModal } = useStore();
 
-    useEffect(()=>{
+    useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
-            if(user)
-            {
+            if (user) {
                 await setFetch(user.uid, user)
             }
-            else if (!user && protect)
-            {
+            else if (!user && protect) {
                 router.push('/login');
             }
-            else 
-            {
+            else {
                 setUserData(null)
             }
             setLoading(false);
         })
-    },[])
+    }, [])
 
     useEffect(() => {
         setUserData(userData);
 
-        if(!userData) return;
+        if (!userData) return;
 
-        if(new Date(userData.streak?.at(-1).time).toLocaleDateString() === new Date().toLocaleDateString()) return;
+        // if(new Date(userData.streak?.at(-1).time).toLocaleDateString() === new Date().toLocaleDateString()) return;
 
-        if(!userData.streak) userData.streak = [];
+        if (!userData.streak) userData.streak = [];
 
-        (userData.streak?.at(-1)?.streak + 1) % 7 === 0? updateXp(20): null;
-        
-        updateDoc(doc(db, "users", userData.uid), {
-            streak: [...userData.streak, {time: Date.now(), streak: Date.now() - userData.streak?.at(-1)?.time <=  1000 * 60 * 60 * 24 ? userData.streak.at(-1)?.streak + 1 : 1}]
-        })
+        const streak = userData.streak?.at(-1) || null
 
-        setStreakModal(true);
+        const updateStreak = (streak) => {
+            setStreakModal(streak);
+            streak % 7 === 0 ? updateXp(20) : null;
+            updateDoc(doc(db, "users", userData.uid), {
+                streak: [...userData.streak, { time: Date.now(), streak }]
+            })
+        }
+
+        const getStreak = () => {
+            if (!streak) return;
+            else if (streak.time <= Date.now() - 1000 * 60 * 60 * 24) {
+                updateStreak(streak.streak + 1)
+            }
+            else if ((new Date(streak.time).getDay() < new Date().getDay() || (new Date(streak.time).getDay() === 6 && new Date().getDay() === 0)) && streak.time >= Date.now() - 1000 * 60 * 60 * 24 * 2) {
+                
+                updateStreak(streak.streak + 1)
+            }
+            else if (streak.time >= Date.now() - 1000 * 60 * 60 * 24) {
+                return
+            }
+            else {
+                updateStreak(1)
+                return
+            }
+        }
+
+        getStreak();
+
     }, [userData])
 
     return [userData, loading];
