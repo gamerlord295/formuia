@@ -17,7 +17,6 @@ export default function PostForm() {
   const { userData } = useStore()
   const [buttonValues, setButtonValues] = useState({
     value: "Submit",
-    isDisabled: false,
     isLoading: false,
   });
 
@@ -30,42 +29,48 @@ export default function PostForm() {
     files = null;
   };
 
-  const addData = (e) => {
+  const addData = async (e) => {
     e.preventDefault();
-    const { target } = e;
+    const { target: { title: { value: title }, des: { value: description } } } = e;
     setButtonValues({ ...buttonValues, isLoading: true, value: "Loading" });
     const arr = [];
     let itemsDone = 0;
-    const title = target.title.value;
-    const description = target.des.value;
 
+    const publishPost = () => {
+      addDoc(colRef, {
+        title,
+        description,
+        src: arr || null,
+        uid: userData.uid,
+        likes: 0,
+        liked: [],
+        comments: [],
+        CreatedAt: new Date(),
+      });
 
-    img.forEach(async (currentImg, index, array) => {
+      e.target.reset();
+      setImg([]);
+      setUrl([]);
+      setButtonValues({ ...buttonValues, isLoading: false, value: "Submit" });
+    }
+
+    img.forEach(async (currentImg) => {
       const imgRef = ref(storage, `posts/${self.crypto.randomUUID()}`);
       await uploadBytes(imgRef, currentImg).then(async () => {
         const imgUrl = await getDownloadURL(imgRef);
         arr.push(imgUrl);
         itemsDone++;
-        if (itemsDone === array.length) {
-          addDoc(colRef, {
-            title,
-            description,
-            src: arr || null,
-            uid: userData.uid,
-            likes: 0,
-            liked: [],
-            comments: [],
-            CreatedAt: new Date(),
-          });
-        }
       });
+
+      if (itemsDone === img.length) {
+        publishPost();
+      }
     });
 
 
-    target.reset();
-    setImg([]);
-    setUrl([]);
-    setButtonValues({ ...buttonValues, isLoading: false, value: "Submit" });
+    if (!img.length) {
+      publishPost();
+    }
   };
 
   return (
@@ -103,6 +108,7 @@ export default function PostForm() {
               className="purple-btn flex flex-row"
               onClick={() => document.getElementById("fileSelctor").click()}
               color="violet"
+              isDisabled={buttonValues.isLoading}
               startContent={
                 <Image
                   width={26}
@@ -127,20 +133,24 @@ export default function PostForm() {
                 <div
                   key={item}
                   className="relative"
-                  onClick={() => {
-                    const index = url.indexOf(item);
-                    let urlArr = [...url];
-                    let imgsArr = [...img];
-                    urlArr.splice(index, 1);
-                    imgsArr.splice(index, 1);
-                    setUrl(urlArr);
-                    setImg(imgsArr);
-                  }}
                 >
                   <img src={item} className="h-16 w-16 object-cover" alt="" />
-                  <p className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-slate-700 text-center font-bold opacity-50 hover:opacity-80">
-                    X
-                  </p>
+                  <button
+                    isDisabled={buttonValues.isLoading}
+                    onClick={() => {
+                      const index = url.indexOf(item);
+                      let urlArr = [...url];
+                      let imgsArr = [...img];
+                      urlArr.splice(index, 1);
+                      imgsArr.splice(index, 1);
+                      setUrl(urlArr);
+                      setImg(imgsArr);
+                    }}
+                    className="absolute top-1 right-1 rounded-full bg-black/50 p-1">
+                    <svg width={20} height={20} className="scale-75">
+                      <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z" fill="#fff" fillRule="evenodd" clipRule="evenodd" stroke="#fff" strokeWidth={2} />
+                    </svg>
+                  </button>
                 </div>
               ))}
             </div>

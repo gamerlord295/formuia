@@ -138,18 +138,20 @@ const Page = ({ params }) => {
 
     return (
         <div className="grid-cols-3 2xl:grid-cols-4 grid w-full h-svh">
-            <div className="w-full bg-zinc-900 hidden 2xl:flex flex-col">
+            <div className="w-full bg-zinc-900 hidden 2xl:flex flex-col max-h-svh">
                 {/* header */}
                 <div className="h-16 flex items-center border-b-1 border-zinc-700 pl-8">
                     <p>Chats</p>
                 </div>
 
                 {/* chat list */}
+                <div className="flex flex-col overflow-x-hidden overflow-y-auto">
                 {chats?.filter((chat) => chat.messages.length > 0).filter((chat) => !chat.uid.some((id) => userData?.blocks?.includes(id))) .sort((a, b) => b.messages[b.messages.length - 1].time - a.messages[a.messages.length - 1].time).map((chat) => (
                     <Chat key={chat.id} chat={chat} userData={userData}/>
                 ))}
+                </div>
             </div>
-            <div className="flex flex-col h-full justify-between col-span-3 max-h-screen">
+            <div className="flex flex-col h-full justify-between col-span-3 max-h-svh overflow-auto">
 
                 {/* header */}
                 <div className="flex flex-row items-center bg-zinc-900 h-16 p-4 border-b-1 gap-4 border-zinc-700">

@@ -121,7 +121,6 @@ const Menu = ({ id }) => {
   };
 
   return (
-    <div className="relative">
       <Dropdown>
         <DropdownTrigger>
           <NextImage
@@ -131,15 +130,12 @@ const Menu = ({ id }) => {
             className="cursor-pointer"
           />
         </DropdownTrigger>
-        <DropdownMenu>
-          <DropdownItem>
-            <p className="cursor-pointer text-red-600" onClick={delDoc}>
-              delete
-            </p>
+        <DropdownMenu aria-label="Actions">
+          <DropdownItem className="cursor-pointer text-red-600" color="danger" onClick={delDoc}>
+            Delete
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-    </div>
   );
 };
 
