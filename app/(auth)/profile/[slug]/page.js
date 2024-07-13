@@ -35,7 +35,7 @@ const Page = ({ params }) => {
   const [createChat] = useSet("chats")
   const [userData, loading] = useAuth(false);
   const [data, fetchData] = useUserData(false);
-  const [postsData, setFetch] = useFetch("posts");
+  const [postsData, setFetch] = useFetch("posts", true);
   const router = useRouter();
   const [updateXp] = useLevel(data);
 
@@ -62,6 +62,8 @@ const Page = ({ params }) => {
 
   useEffect(() => {
     const fetch = async () => {
+      if(!params?.slug) return
+
       await fetchData(params.slug);
       await setFetch(
         orderBy("CreatedAt", "desc"),

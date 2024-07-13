@@ -30,7 +30,7 @@ const Page = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (!data && Array.isArray(data)) return;
+    if (!data && !Array.isArray(data)) return;
 
     let postsData = data?.filter((post) => !userData?.blocks?.includes(post.uid))
     setPosts(postsData?.filter((post) => !userData?.blocked?.includes(post.uid)))
