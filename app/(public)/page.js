@@ -30,13 +30,13 @@ const Page = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (!data && !Array.isArray(data)) return;
+    if (!data || !Array.isArray(data) || data.length === 0) return;
 
-    let postsData = data?.filter((post) => !userData?.blocks?.includes(post.uid))
+    let postsData = data.filter((post) => !userData?.blocks?.includes(post.uid))
     setPosts(postsData?.filter((post) => !userData?.blocked?.includes(post.uid)))
   }, [data])
 
-  if (loading) {
+  if (loading || !data) {
     return <Loader />;
   }
 
